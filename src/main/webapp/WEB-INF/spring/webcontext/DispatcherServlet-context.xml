@@ -18,6 +18,9 @@
    <mvc:annotation-driven enable-matrix-variables="true" />
    <context:component-scan base-package="com.packt.webstore" />
 
+	<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename" value="messages" />
+	</bean>
 	
    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
       <property name="prefix" value="/WEB-INF/views/" />
