@@ -49,4 +49,9 @@ public class ProductServiceImpl implements ProductService {
 		return productRepository.getProductsByPriceFilter(filterParams);
 	}
 
+	@Override
+	public void addProduct(Product product) {
+		productRepository.addProduct(product);
+	}
+
 }

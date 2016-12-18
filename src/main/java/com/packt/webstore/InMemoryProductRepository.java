@@ -145,4 +145,9 @@ public class InMemoryProductRepository implements ProductRepository {
 		System.out.println("all price bounded products: " + productsLower);
 		return productsLower;
 	}
+
+	@Override
+	public void addProduct(Product product) {
+		listOfProducts.add(product);
+	}
 }
