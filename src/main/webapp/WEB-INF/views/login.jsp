@@ -30,7 +30,7 @@
 					<div class="panel-body">
 						<c:if test="${not empty error }">
 							<div class="alert alert-danger">
-								<spring:message code="AbstractUSerDetailsAuthenticationProvider.badCredentials" /><br />
+								<spring:message code="AbstractUserDetailsAuthenticationProvider.badCredentials" /><br />
 							</div>
 						</c:if>
 						<form action="<c:url value="/j_spring_security_check"> </c:url>" method="post">
