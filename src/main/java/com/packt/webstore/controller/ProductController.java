@@ -1,9 +1,12 @@
 package com.packt.webstore.controller;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.packt.webstore.domain.Product;
 import com.packt.webstore.service.ProductService;
@@ -95,8 +99,8 @@ public class ProductController {
 	
 	
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public String processAddNewProductForm(@ModelAttribute("newProduct") Product newProduct,
-			BindingResult result){
+	public String processAddNewProductForm(@ModelAttribute("newProduct") Product productToBeAdded,
+			BindingResult result, HttpServletRequest request){
 		
 		String[] suppressedFields = result.getSuppressedFields();
 		if(suppressedFields.length > 0){
@@ -104,7 +108,19 @@ public class ProductController {
 					StringUtils.arrayToCommaDelimitedString(suppressedFields));
 		}
 		
-		productService.addProduct(newProduct);
+		MultipartFile productImage = productToBeAdded.getProductImage(); 
+		String rootDirectory = request.getSession().getServletContext().getRealPath("/");
+		
+		if(productImage != null && !productImage.isEmpty()){
+			try{
+				productImage.transferTo(new File(rootDirectory + "resources\\images\\" +
+						productToBeAdded.getProductId() + ".jpg") );
+			}catch(Exception e){
+				throw new RuntimeException("Niepowodzenie podczas próby zapisu obrazka produktu", e);
+			}
+		}
+		
+		productService.addProduct(productToBeAdded);
 		return "redirect:/products";
 	}
 	
